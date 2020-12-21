@@ -10,7 +10,7 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DevCamp"
+            android:text="TechDay 2020"
             android:textStyle="bold"
             android:textSize="40sp"
             android:textColor="@color/appDetailsColor"

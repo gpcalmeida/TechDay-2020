@@ -12,7 +12,6 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClickListener {
-    private var isFirstTime: Boolean = true
     lateinit var binding: ActivityMainBinding
 
     init {
@@ -24,9 +23,10 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
 
         setContentView(binding.root)
+        setExoPlayer()
     }
 
-    fun setExoPlayer(){
+    private fun setExoPlayer(){
         val exoPlayer = SimpleExoPlayer.Builder(this).build()
         with(exoPlayer) {
 
