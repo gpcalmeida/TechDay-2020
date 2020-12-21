@@ -72,6 +72,9 @@ class MatchRecyclerAdapter(
                 )
 
                 binding.root.setOnClickListener {
+                    if(selectedPosition == pos)
+                        return@setOnClickListener
+
                     selectedPosition = pos
                     onItemClickListener.invoke(match)
                     notifyDataSetChanged()
