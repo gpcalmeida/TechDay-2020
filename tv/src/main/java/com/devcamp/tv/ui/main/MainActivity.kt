@@ -1,7 +1,6 @@
 package com.devcamp.tv.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -14,7 +13,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     lateinit var binding: ActivityMainBinding
 
     init {
@@ -25,12 +24,15 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
+        binding.matchPlayer.onFocusChangeListener = this
         binding.matchesRecyclerView.onFocusChangeListener = this
+        binding.mainContainer.onFocusChangeListener = this
+        binding.matchesRecyclerView.visibility = View.INVISIBLE
         setExoPlayer()
         setupMatchRecyclerAdapter()
     }
 
-    private fun setExoPlayer(){
+    private fun setExoPlayer() {
         val exoPlayer = SimpleExoPlayer.Builder(this).build()
         with(exoPlayer) {
 
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
             this.prepare()
             this.play()
 
-            binding.matchPlayer.onFocusChangeListener = this@MainActivity
             binding.matchPlayer.requestFocus()
             binding.matchPlayer.player = this
         }
@@ -54,12 +55,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         when {
-            view?.id == R.id.matchPlayer && hasFocus -> {
-                binding.matchPlayer.requestFocus()
-                binding.matchesRecyclerView.visibility = View.INVISIBLE
-            }
+            view?.id == R.id.matchPlayer && hasFocus -> binding.matchesRecyclerView.visibility = View.INVISIBLE
             else -> {
-                binding.matchesRecyclerView.requestFocus()
                 binding.matchesRecyclerView.visibility = View.VISIBLE
             }
         }
