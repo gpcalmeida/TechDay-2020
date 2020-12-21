@@ -97,16 +97,7 @@ class MainFragment : Fragment() {
                 visitorDrawable = R.drawable.ic_bot,
                 videoDrawable = R.raw.acg_int
             ),
-            Match(
-                homeTeam = "ACG",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_acg,
-                visitorTeam = "INT",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_int,
-                videoDrawable = R.raw.bah_sao
-            ),
-            Match(
+           Match(
                 homeTeam = "ACG",
                 homeScore = 0,
                 homeDrawable = R.drawable.ic_acg,
