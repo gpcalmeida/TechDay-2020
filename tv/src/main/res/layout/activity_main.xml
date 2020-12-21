@@ -18,17 +18,20 @@
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/matchPlayer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:use_controller="false" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/matchesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_match"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:itemCount="5"
+            android:background="@color/blackFortyTransparency"
+            android:paddingVertical="16dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_match" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
