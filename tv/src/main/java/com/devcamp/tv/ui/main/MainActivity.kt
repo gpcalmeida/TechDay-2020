@@ -3,6 +3,7 @@ package com.devcamp.tv.ui.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -57,9 +58,13 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         when {
             view?.id == R.id.matchPlayer && hasFocus -> {
                 binding.matchesRecyclerView.visibility = View.INVISIBLE
+                animateSlideDown(binding.matchesRecyclerView)
             }
             view?.id == R.id.mainContainer -> binding.matchesRecyclerView.requestFocus()
-            else -> binding.matchesRecyclerView.visibility = View.VISIBLE
+            else -> {
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+                animateSlideUp(binding.matchesRecyclerView)
+            }
         }
     }
 
@@ -69,6 +74,20 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
 
             }
         }
+    }
+
+    private fun animateSlideUp(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
+    }
+
+    private fun animateSlideDown(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
     }
 
     private fun setupMatchRecyclerAdapter() {
