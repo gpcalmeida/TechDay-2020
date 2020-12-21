@@ -55,10 +55,10 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         when {
-            view?.id == R.id.matchPlayer && hasFocus -> binding.matchesRecyclerView.visibility = View.INVISIBLE
-            else -> {
-                binding.matchesRecyclerView.visibility = View.VISIBLE
+            view?.id == R.id.matchPlayer && hasFocus -> {
+                binding.matchesRecyclerView.visibility = View.INVISIBLE
             }
+            else -> binding.matchesRecyclerView.visibility = View.VISIBLE
         }
     }
 
