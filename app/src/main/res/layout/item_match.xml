@@ -55,9 +55,9 @@
         android:layout_marginTop="@dimen/spacings_four"
         android:fontFamily="@font/opensans_bold"
         android:gravity="center"
-        android:text="CAMPEONATO CARIOCA"
+        android:text="@string/championship_rj"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_ten"
+        android:textSize="@dimen/text_size_eight"
         tools:ignore="SmallSp" />
 
     <LinearLayout

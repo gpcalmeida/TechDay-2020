@@ -14,6 +14,7 @@
     <dimen name="text_size_eighteen">18sp</dimen>
     <dimen name="text_size_fourteen">14sp</dimen>
     <dimen name="text_size_ten">10sp</dimen>
+    <dimen name="text_size_eight">8sp</dimen>
     <dimen name="match_layout_width">150dp</dimen>
     <dimen name="match_layout_height">180dp</dimen>
 </resources>
