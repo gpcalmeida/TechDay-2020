@@ -17,12 +17,16 @@
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/matchPlayer"
+            android:tag="matchplayer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:use_controller="false" />
+            app:use_controller="false"
+            android:focusable="true"
+            android:nextFocusDown="@id/matchesRecyclerView"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/matchesRecyclerView"
+            android:tag="matchesRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/blackFortyTransparency"
@@ -31,7 +35,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:itemCount="7"
-            tools:listitem="@layout/item_match" />
+            tools:listitem="@layout/item_match"
+            android:focusable="true"
+            android:nextFocusUp="@id/matchPlayer"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

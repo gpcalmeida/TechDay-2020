@@ -1,22 +1,28 @@
 package com.devcamp.tv.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.devcamp.tv.databinding.ItemMatchBinding
+import com.devcamp.tv.expand
+import com.devcamp.tv.reduce
 import com.devcamp.tv.ui.main.model.Match
+import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MatchRecyclerAdapter(
     private var matches: List<Match>
-) : RecyclerView.Adapter<MatchRecyclerAdapter.Holder>() {
+) : RecyclerView.Adapter<MatchRecyclerAdapter.Holder>(),
+    View.OnFocusChangeListener {
 
-    lateinit var onItemClickListener : () -> Unit
+    lateinit var onItemClickListener: () -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder (
-            ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent,false),
-            onItemClickListener
-        )
+        val view = ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        view.root.isFocusable = true
+        view.root.isFocusableInTouchMode = true
+        view.root.onFocusChangeListener = this
+        return Holder(view, onItemClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -29,10 +35,10 @@ class MatchRecyclerAdapter(
 
     class Holder(
         private val binding: ItemMatchBinding,
-        private val onItemClickListener : () -> Unit
-    ): RecyclerView.ViewHolder(binding.root) {
+        private val onItemClickListener: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(match: Match){
+        fun bind(match: Match) {
             binding.homeTeamTextView.text = match.homeTeam
             binding.homeScoreTextView.text = match.homeScore.toString()
             binding.visitorTeamTextView.text = match.visitorTeam
@@ -41,6 +47,14 @@ class MatchRecyclerAdapter(
             binding.root.setOnClickListener {
                 onItemClickListener.invoke()
             }
+        }
+    }
+
+    override fun onFocusChange(view: View, hasFocus: Boolean) {
+        if (view.isFocused) {
+            view.expand()
+        } else {
+            view.reduce()
         }
     }
 }
