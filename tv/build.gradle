@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
 
     defaultConfig {
         applicationId "com.devcamp.tv"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +21,13 @@ android {
         }
     }
 
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures{
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -39,6 +46,7 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.4.0"
     implementation 'androidx.constraintlayout:constraintlayout-solver:1.1.3'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
     implementation 'androidx.core:core-ktx:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'

@@ -1,89 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:focusable="false"
-android:id="@+id/activity_main_drawer_layout"
-android:nextFocusUp="@id/activity_main_text_view_home"
-android:nextFocusLeft="@id/activity_main_text_view_home"
-android:nextFocusDown="@id/activity_main_text_view_account"
-android:nextFocusRight="@id/activity_main_container"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:animateLayoutChanges="true">
-
-    <FrameLayout
-            android:id="@+id/activity_main_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="afterDescendants"
-            android:layout_marginStart="80dp" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:focusable="false"
+    android:nextFocusDown="@id/matchesRecyclerView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/activity_main_content_menu"
-            android:layout_width="wrap_content"
+        android:id="@+id/activity_main_content_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/appNavigationColor">
+
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/matchPlayer"
+            android:tag="matchplayer"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/appNavigationColor"
-            android:maxWidth="250dp"
-            android:minWidth="80dp">
+            app:use_controller="false"
+            android:focusable="true"
+            android:nextFocusDown="@id/matchesRecyclerView"/>
 
-        <TextView
-                android:id="@+id/activity_main_text_view_home"
-                android:layout_width="0dp"
-                android:drawableLeft="@drawable/ic_play"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/activity_main_text_view_account"
-                app:layout_constraintEnd_toStartOf="@id/activity_main_view_divider"
-                app:layout_constraintStart_toStartOf="@id/activity_main_content_menu"
-                app:layout_constraintTop_toTopOf="@id/activity_main_content_menu"
-                app:layout_constraintVertical_bias="0.5"
-                app:layout_constraintVertical_chainStyle="packed"
-                android:textSize="16dp"
-                android:text="Home"
-                android:background="@drawable/selector_menu"
-                android:textColor="@color/appDetailsColor"
-                android:drawablePadding="16dp"
-                android:focusable="true"
-                android:nextFocusUp="@id/activity_main_text_view_home"
-                android:nextFocusLeft="@id/activity_main_text_view_home"
-                android:nextFocusRight="@id/activity_main_container"
-                android:nextFocusDown="@id/activity_main_text_view_account"
-                android:paddingLeft="26dp"
-                android:paddingRight="26dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/matchesRecyclerView"
+            android:tag="matchesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blackFortyTransparency"
+            android:paddingVertical="16dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_match"
+            android:focusable="true"
+            android:nextFocusUp="@id/matchPlayer"/>
 
-
-        <TextView
-                android:id="@+id/activity_main_text_view_account"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_account_two"
-                app:layout_constraintBottom_toBottomOf="@id/activity_main_content_menu"
-                app:layout_constraintEnd_toStartOf="@id/activity_main_view_divider"
-                app:layout_constraintStart_toStartOf="@id/activity_main_content_menu"
-                app:layout_constraintTop_toBottomOf="@id/activity_main_text_view_home"
-                android:textSize="16dp"
-                android:text="Account"
-                android:background="@drawable/selector_menu"
-                android:textColor="@color/appDetailsColor"
-                android:drawablePadding="16dp"
-                android:focusable="true"
-                android:nextFocusUp="@id/activity_main_text_view_home"
-                android:nextFocusLeft="@id/activity_main_text_view_account"
-                android:nextFocusRight="@id/activity_main_container"
-                android:nextFocusDown="@id/activity_main_text_view_account"
-                android:paddingLeft="26dp"
-                android:paddingRight="26dp"/>
-
-        <View
-                android:id="@+id/activity_main_view_divider"
-                android:layout_width="2dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:nextFocusDown="@drawable/button_selector"
-                android:layout_height="0dp"
-                android:background="@color/appNavigationColor"
-                app:layout_constraintBottom_toBottomOf="@id/activity_main_content_menu"
-                app:layout_constraintEnd_toEndOf="@id/activity_main_content_menu"
-                app:layout_constraintTop_toTopOf="@id/activity_main_content_menu" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
