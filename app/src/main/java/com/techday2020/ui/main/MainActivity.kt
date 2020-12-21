@@ -1,8 +1,8 @@
-package com.techday2020
+package com.techday2020.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.techday2020.ui.main.MainFragment
+import com.techday2020.R
 
 class MainActivity : AppCompatActivity() {
 
