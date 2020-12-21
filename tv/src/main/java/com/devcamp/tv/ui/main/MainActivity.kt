@@ -1,6 +1,7 @@
 package com.devcamp.tv.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
@@ -23,8 +24,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
-
         setContentView(binding.root)
+        binding.matchesRecyclerView.onFocusChangeListener = this
         setExoPlayer()
         setupMatchRecyclerAdapter()
     }
@@ -41,6 +42,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
             this.prepare()
             this.play()
 
+            binding.matchPlayer.onFocusChangeListener = this@MainActivity
+            binding.matchPlayer.requestFocus()
             binding.matchPlayer.player = this
         }
     }
@@ -50,7 +53,15 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
     }
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
-        when (view?.id) {
+        when {
+            view?.id == R.id.matchPlayer && hasFocus -> {
+                binding.matchPlayer.requestFocus()
+                binding.matchesRecyclerView.visibility = View.INVISIBLE
+            }
+            else -> {
+                binding.matchesRecyclerView.requestFocus()
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+            }
         }
     }
 
