@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.techday2020.R
 import com.techday2020.databinding.MainFragmentBinding
 import com.techday2020.ui.model.Match
 
@@ -35,10 +37,18 @@ class MainFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val exoPlayer = SimpleExoPlayer.Builder(this.requireContext()).build()
+        with(exoPlayer) {
+            val media = MediaItem.Builder()
+                .setUri("android.resource://" + this@MainFragment.requireActivity().packageName + "/" + R.raw.acg_int)
+                .build()
 
-        exoPlayer.play()
+            this.addMediaItem(media)
+            this.prepare()
+            this.play()
 
-        binding.player.player = exoPlayer
+            binding.player.player = this
+        }
+
 
         setupMatchRecyclerAdapter()
     }
