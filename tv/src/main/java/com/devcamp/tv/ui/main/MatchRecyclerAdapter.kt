@@ -4,10 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
 import com.devcamp.tv.expand
 import com.devcamp.tv.reduce
 import com.devcamp.tv.ui.main.model.Match
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MatchRecyclerAdapter(
@@ -20,8 +22,8 @@ class MatchRecyclerAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         view.root.isFocusable = true
-        view.root.isFocusableInTouchMode = true
         view.root.onFocusChangeListener = this
+        view.root.nextFocusUpId = R.id.matchPlayer
         return Holder(view, onItemClickListener)
     }
 

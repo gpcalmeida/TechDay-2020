@@ -1,12 +1,14 @@
 package com.devcamp.tv.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.devcamp.tv.*
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
@@ -14,7 +16,7 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     lateinit var binding: ActivityMainBinding
 
     init {
@@ -25,12 +27,15 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
+        binding.matchPlayer.onFocusChangeListener = this
         binding.matchesRecyclerView.onFocusChangeListener = this
+        binding.mainContainer.onFocusChangeListener = this
+        binding.matchesRecyclerView.visibility = View.INVISIBLE
         setExoPlayer()
         setupMatchRecyclerAdapter()
     }
 
-    private fun setExoPlayer(){
+    private fun setExoPlayer() {
         val exoPlayer = SimpleExoPlayer.Builder(this).build()
         with(exoPlayer) {
 
@@ -42,7 +47,6 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
             this.prepare()
             this.play()
 
-            binding.matchPlayer.onFocusChangeListener = this@MainActivity
             binding.matchPlayer.requestFocus()
             binding.matchPlayer.player = this
         }
@@ -55,12 +59,20 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         when {
             view?.id == R.id.matchPlayer && hasFocus -> {
-                binding.matchPlayer.requestFocus()
+                val shouldAnimate = !binding.matchesRecyclerView.isInvisible
                 binding.matchesRecyclerView.visibility = View.INVISIBLE
+                if (shouldAnimate) animateSlideDown(binding.matchesRecyclerView)
+            }
+            view?.id == R.id.mainContainer -> {
+                binding.matchesRecyclerView.requestFocus()
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
             }
             else -> {
-                binding.matchesRecyclerView.requestFocus()
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
                 binding.matchesRecyclerView.visibility = View.VISIBLE
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
             }
         }
     }
@@ -71,6 +83,20 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
 
             }
         }
+    }
+
+    private fun animateSlideUp(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
+    }
+
+    private fun animateSlideDown(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
     }
 
     private fun setupMatchRecyclerAdapter() {

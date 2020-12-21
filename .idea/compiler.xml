@@ -2,10 +2,10 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
-      <module name="TechDay_2020.app" target="1.8" />
-      <module name="TechDay_2020.data" target="1.8" />
-      <module name="TechDay_2020.network" target="1.8" />
-      <module name="TechDay_2020.tv" target="1.8" />
+      <module name="TechDay_2020.app" target="11" />
+      <module name="TechDay_2020.data" target="11" />
+      <module name="TechDay_2020.network" target="11" />
+      <module name="TechDay_2020.tv" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
