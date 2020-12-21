@@ -1,4 +1,4 @@
-package com.techday2020.ui.main
+package com.techday2020.ui.main.view
 
 import android.content.res.Configuration
 import androidx.lifecycle.ViewModelProvider
@@ -8,10 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.techday2020.R
 import com.techday2020.databinding.MainFragmentBinding
+import com.techday2020.ui.main.MainController
+import com.techday2020.ui.main.MainControllerFactory
+import com.techday2020.ui.main.view.adapter.MatchRecyclerAdapter
 import com.techday2020.ui.model.Match
 
 class MainFragment : Fragment() {
@@ -21,9 +26,15 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
+    private val viewModel by viewModels<MainController> {
+        MainControllerFactory()
+    }
+
+    private val matchesAdapter = MatchRecyclerAdapter(emptyList())
+
     private lateinit var exoplayer : SimpleExoPlayer
     private lateinit var binding: MainFragmentBinding
-    private lateinit var viewModel: MainViewModel
+    private lateinit var controller: MainController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,15 +47,16 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        controller = ViewModelProvider(this).get(MainController::class.java)
 
         addMediaToPlayer(R.raw.acg_int)
-        setupMatchRecyclerAdapter()
 
         binding.playImageView.setOnClickListener {
             playVideo()
         }
 
+        setupMatchRecyclerAdapter()
+        setupObservers()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -72,6 +84,14 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun setupObservers() {
+        viewModel.getMatches().observe(viewLifecycleOwner, Observer { matches ->
+            matches?.let {
+                matchesAdapter.replaceMatches(it)
+            }
+        })
+    }
+
     private fun addMediaToPlayer(res: Int) {
         exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
         with(exoplayer) {
@@ -88,63 +108,7 @@ class MainFragment : Fragment() {
     }
 
     private fun setupMatchRecyclerAdapter() {
-        val matches = listOf(
-            Match(
-                homeTeam = "ACG",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_acg,
-                visitorTeam = "INT",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_int,
-                videoDrawable = R.raw.acg_int
-            ),
-            Match(
-                homeTeam = "BAH",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_bah,
-                visitorTeam = "SAO",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_sao,
-                videoDrawable = R.raw.bah_sao
-            ),
-            Match(
-                homeTeam = "ACG",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_acg,
-                visitorTeam = "INT",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_int,
-                videoDrawable = R.raw.acg_int
-            ),
-            Match(
-                homeTeam = "BAH",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_bah,
-                visitorTeam = "SAO",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_sao,
-                videoDrawable = R.raw.bah_sao
-            ),
-            Match(
-                homeTeam = "ACG",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_acg,
-                visitorTeam = "INT",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_int,
-                videoDrawable = R.raw.acg_int
-            ),
-            Match(
-                homeTeam = "BAH",
-                homeScore = 0,
-                homeDrawable = R.drawable.ic_bah,
-                visitorTeam = "SAO",
-                visitorScore = 0,
-                visitorDrawable = R.drawable.ic_sao,
-                videoDrawable = R.raw.bah_sao
-            )
-        )
-        binding.matchRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
+        binding.matchRecyclerView.adapter = matchesAdapter.apply {
             onItemClickListener = {
                 addMediaToPlayer(R.raw.bah_sao)
                 playVideo()

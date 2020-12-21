@@ -1,10 +1,8 @@
-package com.techday2020.ui.main
+package com.techday2020.ui.main.view
 
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import com.techday2020.R
 
@@ -16,7 +14,9 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(R.id.container,
+                    MainFragment.newInstance()
+                )
                 .commitNow()
         }
     }

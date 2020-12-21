@@ -1,4 +1,4 @@
-package com.techday2020.ui.main
+package com.techday2020.ui.main.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -29,6 +29,11 @@ class MatchRecyclerAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(matches[position], position == selectedPosition, position)
+    }
+
+    fun replaceMatches(matches : List<Match>) {
+        this.matches = matches
+        notifyDataSetChanged()
     }
 
     inner class Holder(
