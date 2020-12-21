@@ -22,7 +22,6 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var exoplayer : SimpleExoPlayer
-
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
 
