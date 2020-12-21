@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
             view?.id == R.id.matchPlayer && hasFocus -> {
                 binding.matchesRecyclerView.visibility = View.INVISIBLE
             }
+            view?.id == R.id.mainContainer -> binding.matchesRecyclerView.requestFocus()
             else -> binding.matchesRecyclerView.visibility = View.VISIBLE
         }
     }
