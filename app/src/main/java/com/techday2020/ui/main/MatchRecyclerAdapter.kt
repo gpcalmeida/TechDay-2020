@@ -2,6 +2,7 @@ package com.techday2020.ui.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.techday2020.databinding.ItemMatchBinding
 import com.techday2020.ui.model.Match
@@ -10,7 +11,7 @@ class MatchRecyclerAdapter(
     private var matches: List<Match>
 ) : RecyclerView.Adapter<MatchRecyclerAdapter.Holder>() {
 
-    lateinit var onItemClickListener : () -> Unit
+    lateinit var onItemClickListener : (match: Match) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         return Holder (
@@ -29,17 +30,20 @@ class MatchRecyclerAdapter(
 
     class Holder(
         private val binding: ItemMatchBinding,
-        private val onItemClickListener : () -> Unit
+        private val onItemClickListener : (match : Match) -> Unit
     ): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match){
             binding.homeTeamTextView.text = match.homeTeam
             binding.homeScoreTextView.text = match.homeScore.toString()
+            binding.homeTeamImageView.setImageDrawable(ContextCompat.getDrawable(binding.root.context, match.homeDrawable))
+
             binding.visitorTeamTextView.text = match.visitorTeam
             binding.visitorScoreTextView.text = match.visitorScore.toString()
+            binding.visitorTeamImageView.setImageDrawable(ContextCompat.getDrawable(binding.root.context, match.visitorDrawable))
 
             binding.root.setOnClickListener {
-                onItemClickListener.invoke()
+                onItemClickListener.invoke(match)
             }
         }
     }
