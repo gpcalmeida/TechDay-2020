@@ -7,8 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -23,8 +21,9 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var binding: MainFragmentBinding
+    private lateinit var exoplayer : SimpleExoPlayer
 
+    private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -40,8 +39,13 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        setupPlayer(R.raw.acg_int)
+        addMediaToPlayer(R.raw.acg_int)
         setupMatchRecyclerAdapter()
+
+        binding.playImageView.setOnClickListener {
+            playVideo()
+        }
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -49,7 +53,6 @@ class MainFragment : Fragment() {
 
         when (newConfig.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> {
-
                 binding.playerView.apply {
                     layoutParams = ConstraintLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -70,19 +73,18 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun setupPlayer(res: Int) {
-        val exoPlayer = SimpleExoPlayer.Builder(this.requireContext()).build()
-        with(exoPlayer) {
-
+    private fun addMediaToPlayer(res: Int) {
+        exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
+        with(exoplayer) {
             val mediaItem = MediaItem.Builder()
                 .setUri(getVideoResourcePath(res))
+                .setMediaId(res.toString())
                 .build()
 
             this.addMediaItem(mediaItem)
             this.prepare()
-            this.play()
 
-            binding.playerView.player = this
+            binding.playerView.player = exoplayer
         }
     }
 
@@ -145,7 +147,8 @@ class MainFragment : Fragment() {
         )
         binding.matchRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
             onItemClickListener = {
-                setupPlayer(R.raw.bah_sao)
+                addMediaToPlayer(R.raw.bah_sao)
+                playVideo()
             }
 
         }
@@ -153,5 +156,11 @@ class MainFragment : Fragment() {
 
     private fun getVideoResourcePath(res: Int): String {
         return "android.resource://${this@MainFragment.requireActivity().packageName}/${res}"
+    }
+
+    private fun playVideo() {
+        binding.playerView.foreground = null
+        binding.playImageView.visibility = View.GONE
+        exoplayer.play()
     }
 }
