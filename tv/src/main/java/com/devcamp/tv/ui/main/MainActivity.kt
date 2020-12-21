@@ -7,6 +7,8 @@ import android.view.animation.TranslateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.devcamp.tv.*
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
@@ -57,13 +59,20 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
         when {
             view?.id == R.id.matchPlayer && hasFocus -> {
+                val shouldAnimate = !binding.matchesRecyclerView.isInvisible
                 binding.matchesRecyclerView.visibility = View.INVISIBLE
-                animateSlideDown(binding.matchesRecyclerView)
+                if (shouldAnimate) animateSlideDown(binding.matchesRecyclerView)
             }
-            view?.id == R.id.mainContainer -> binding.matchesRecyclerView.requestFocus()
-            else -> {
+            view?.id == R.id.mainContainer -> {
+                binding.matchesRecyclerView.requestFocus()
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
                 binding.matchesRecyclerView.visibility = View.VISIBLE
-                animateSlideUp(binding.matchesRecyclerView)
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
+            }
+            else -> {
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
             }
         }
     }
