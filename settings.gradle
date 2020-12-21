@@ -1,5 +1,6 @@
-include ':tv'
-include ':data'
 include ':domain'
+include ':tv'
+include ':network'
+include ':data'
 include ':app'
 rootProject.name = "TechDay 2020"
