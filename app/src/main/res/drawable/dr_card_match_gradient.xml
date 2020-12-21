@@ -2,11 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <gradient
-        android:startColor="#00000000"
-        android:endColor="#139C26"
+        android:startColor="@color/transparent"
+        android:endColor="@color/green"
         android:angle="-90"/>
 
     <corners
-        android:radius="8dp"/>
+        android:radius="@dimen/card_match_corner_radius"/>
 
 </shape>

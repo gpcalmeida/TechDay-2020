@@ -19,6 +19,7 @@ import com.techday2020.ui.model.Match
 class MainFragment : Fragment() {
 
     companion object {
+        private const val FILL_HEIGHT_ASPECT_RATIO = 0
         fun newInstance() = MainFragment()
     }
 
@@ -61,7 +62,7 @@ class MainFragment : Fragment() {
                 binding.playerView.apply {
                     layoutParams = ConstraintLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
-                        0
+                        FILL_HEIGHT_ASPECT_RATIO
                     )
                     useController = false
                 }
@@ -87,6 +88,42 @@ class MainFragment : Fragment() {
 
     private fun setupMatchRecyclerAdapter() {
         val matches = listOf(
+            Match(
+                homeTeam = "ACG",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_acg,
+                visitorTeam = "INT",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_int,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "BAH",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_bah,
+                visitorTeam = "SAO",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_sao,
+                videoDrawable = R.raw.bah_sao
+            ),
+            Match(
+                homeTeam = "ACG",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_acg,
+                visitorTeam = "INT",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_int,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "BAH",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_bah,
+                visitorTeam = "SAO",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_sao,
+                videoDrawable = R.raw.bah_sao
+            ),
             Match(
                 homeTeam = "ACG",
                 homeScore = 0,

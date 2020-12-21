@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="card_match_corner_radius">8dp</dimen>
+    <dimen name="live_match_drawable_padding">8dp</dimen>
+    <dimen name="team_image_height">40dp</dimen>
+    <dimen name="team_image_width">40dp</dimen>
+    <dimen name="spacings_twenty">20dp</dimen>
+    <dimen name="spacings_sixteen">16dp</dimen>
+    <dimen name="spacings_six">6dp</dimen>
+    <dimen name="spacings_four">4dp</dimen>
+    <dimen name="width_zero">0dp</dimen>
+    <dimen name="height_zero">0dp</dimen>
+    <dimen name="text_size_eighteen">18sp</dimen>
+    <dimen name="text_size_fourteen">14sp</dimen>
+    <dimen name="text_size_ten">10sp</dimen>
+    <dimen name="match_layout_width">150dp</dimen>
+    <dimen name="match_layout_height">180dp</dimen>
+</resources>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="150dp"
-    android:layout_height="180dp"
-    android:layout_marginStart="16dp"
+    android:layout_width="@dimen/match_layout_width"
+    android:layout_height="@dimen/match_layout_height"
+    android:layout_marginStart="@dimen/spacings_sixteen"
     android:background="@drawable/dr_card_match_gradient"
     android:orientation="vertical"
     android:gravity="center">
@@ -11,29 +11,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginHorizontal="@dimen/spacings_twenty"
         android:weightSum="3">
 
         <TextView
             android:id="@+id/homeScoreTextView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/width_zero"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="1"
             android:theme="@style/ScoreTextView" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/width_zero"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/opensans_light"
             android:text="x"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_eighteen"
             android:theme="@style/ScoreTextView" />
 
         <TextView
             android:id="@+id/visitorScoreTextView"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/width_zero"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:text="0"
@@ -43,37 +43,37 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="6dp"
-        android:background="#09B822" />
+        android:layout_marginHorizontal="@dimen/spacings_twenty"
+        android:layout_marginTop="@dimen/spacings_six"
+        android:background="@color/separator_green" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="@dimen/spacings_four"
         android:fontFamily="@font/opensans_bold"
         android:gravity="center"
         android:text="CAMPEONATO CARIOCA"
         android:textColor="@color/white"
-        android:textSize="9sp"
+        android:textSize="@dimen/text_size_ten"
         tools:ignore="SmallSp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/spacings_sixteen"
         android:gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/spacings_sixteen"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/homeTeamImageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/team_image_width"
+                android:layout_height="@dimen/team_image_height"
                 android:src="@drawable/ic_acg" />
 
             <TextView
@@ -81,9 +81,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/spacings_six"
                 android:text="FLA"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:theme="@style/ScoreTextView" />
 
         </LinearLayout>
@@ -91,13 +91,13 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="@dimen/spacings_sixteen"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/visitorTeamImageView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/team_image_width"
+                android:layout_height="@dimen/team_image_height"
                 android:src="@drawable/ic_int" />
 
             <TextView
@@ -105,9 +105,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/spacings_six"
                 tools:text="VAS"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_fourteen"
                 android:theme="@style/ScoreTextView" />
         </LinearLayout>
     </LinearLayout>

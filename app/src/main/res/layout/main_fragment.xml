@@ -6,59 +6,50 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3F3F3F"
+    android:background="@color/gray_background"
     tools:context=".ui.main.MainFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2E903C"
+        android:background="@color/green"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"/>
 
     <com.google.android.exoplayer2.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/height_zero"
         app:use_controller="false"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
 
-    <LinearLayout
-        android:id="@+id/liveMatchesLinearLayout"
+
+
+    <TextView
+        android:id="@+id/liveMatchesTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintTop_toBottomOf="@id/playerView">
+        android:text="@string/live_matches"
+        android:layout_gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/opensans_bold"
+        android:drawablePadding="@dimen/live_match_drawable_padding"
+        android:layout_marginTop="@dimen/spacings_twenty"
+        android:layout_marginHorizontal="@dimen/spacings_twenty"
+        app:drawableStartCompat="@drawable/ic_live"
+        app:layout_constraintTop_toBottomOf="@id/playerView"/>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="15dp"
-            android:src="@drawable/ic_live"
-            android:layout_gravity="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Jogos ao vivo"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/opensans_bold"/>
-
-    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/matchRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="@dimen/height_zero"
+        android:layout_marginTop="@dimen/spacings_sixteen"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/liveMatchesLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/liveMatchesTextView"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_match"/>
 
