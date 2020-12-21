@@ -147,6 +147,7 @@ class MainFragment : Fragment() {
             onItemClickListener = {
                 setupPlayer(R.raw.bah_sao)
             }
+
         }
     }
 
