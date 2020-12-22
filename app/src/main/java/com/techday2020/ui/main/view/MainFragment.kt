@@ -97,7 +97,10 @@ class MainFragment : Fragment() {
 
     private fun setupPlayer() {
         exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
-        binding.playerView.player = exoplayer
+        with(exoplayer) {
+            binding.playerView.player = this
+            this.repeatMode = "1".toInt()
+        }
     }
 
     private fun addMediaToPlayer(res: Int) {
