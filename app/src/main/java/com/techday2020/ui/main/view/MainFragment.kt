@@ -61,6 +61,16 @@ class MainFragment : Fragment() {
         addMediaToPlayer(R.raw.acg_int)
     }
 
+    override fun onPause() {
+        exoplayer.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        exoplayer.play()
+    }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 

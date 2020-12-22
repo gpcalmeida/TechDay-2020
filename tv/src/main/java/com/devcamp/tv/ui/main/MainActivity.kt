@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     lateinit var binding: ActivityMainBinding
+    private lateinit var exoplayer: SimpleExoPlayer
 
     init {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -35,9 +36,19 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         setupMatchRecyclerAdapter()
     }
 
+    override fun onPause() {
+        exoplayer.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        exoplayer.play()
+    }
+
     private fun setExoPlayer() {
-        val exoPlayer = SimpleExoPlayer.Builder(this).build()
-        with(exoPlayer) {
+        exoplayer = SimpleExoPlayer.Builder(this).build()
+        with(exoplayer) {
 
             val mediaItem = MediaItem.Builder()
                 .setUri(getVideoResourcePath(R.raw.acg_int))
