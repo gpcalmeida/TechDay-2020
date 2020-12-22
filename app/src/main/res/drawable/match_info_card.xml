@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient
+        android:startColor="#B35F6C5C"
+        android:endColor="#B35F6C5C"/>
+
+    <corners
+        android:radius="@dimen/card_match_corner_radius"/>
+
+    <stroke
+        android:color="#4DFFFFFF"
+        android:width="2dp"/>
+
+</shape>
