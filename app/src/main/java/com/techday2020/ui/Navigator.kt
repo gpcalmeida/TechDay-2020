@@ -2,7 +2,7 @@ package com.techday2020.ui
 
 import android.app.Activity
 import android.content.Intent
-import com.techday2020.ui.main.MainActivity
+import com.techday2020.ui.main.view.MainActivity
 
 class Navigator(var activity: Activity?) {
 
