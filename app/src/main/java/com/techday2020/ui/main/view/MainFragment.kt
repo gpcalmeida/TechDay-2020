@@ -1,26 +1,27 @@
 package com.techday2020.ui.main.view
 
+import android.content.pm.ActivityInfo
 import android.content.res.Configuration
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.google.android.exoplayer2.ExoPlayer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.video.VideoListener
 import com.techday2020.R
 import com.techday2020.databinding.MainFragmentBinding
 import com.techday2020.ui.main.MainController
 import com.techday2020.ui.main.MainControllerFactory
 import com.techday2020.ui.main.view.adapter.MatchRecyclerAdapter
-import com.techday2020.ui.model.Match
 
 class MainFragment : Fragment() {
 
@@ -35,7 +36,7 @@ class MainFragment : Fragment() {
 
     private val matchesAdapter = MatchRecyclerAdapter(emptyList())
 
-    private lateinit var exoplayer : SimpleExoPlayer
+    private lateinit var exoplayer: SimpleExoPlayer
     private lateinit var binding: MainFragmentBinding
     private lateinit var controller: MainController
 
@@ -52,11 +53,8 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         controller = ViewModelProvider(this).get(MainController::class.java)
 
-        binding.playImageView.setOnClickListener {
-            playVideo()
-        }
-
         setupMatchRecyclerAdapter()
+        setupListeners()
         setupObservers()
         setupPlayer()
 
@@ -73,8 +71,14 @@ class MainFragment : Fragment() {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
-                    useController = true
                 }
+
+                binding.fullscreenImageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.exo_controls_fullscreen_exit
+                    )
+                )
             }
             else -> {
                 binding.playerView.apply {
@@ -82,7 +86,73 @@ class MainFragment : Fragment() {
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         FILL_HEIGHT_ASPECT_RATIO
                     )
-                    useController = false
+                }
+
+                binding.fullscreenImageView.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.exo_controls_fullscreen_enter
+                    )
+                )
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        with(binding) {
+            playTapumeImageView.setOnClickListener {
+                playVideo()
+            }
+
+            playImageView.setOnClickListener {
+                if (exoplayer.isPlaying) {
+                    playImageView.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.exo_icon_play
+                        )
+                    )
+                    exoplayer.pause()
+                } else {
+                    playImageView.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.exo_icon_pause
+                        )
+                    )
+                    exoplayer.play()
+                }
+            }
+
+            fullscreenImageView.setOnClickListener {
+                with(requireActivity().requestedOrientation) {
+                    when (this) {
+                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE -> {
+                            requireActivity().requestedOrientation =
+                                ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+
+                            fullscreenImageView.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    requireContext(),
+                                    R.drawable.exo_controls_fullscreen_enter
+                                )
+                            )
+
+                            requireActivity().requestedOrientation =
+                                ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+                        }
+                        else -> {
+                            requireActivity().requestedOrientation =
+                                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+
+                            fullscreenImageView.setImageDrawable(
+                                ContextCompat.getDrawable(
+                                    requireContext(),
+                                    R.drawable.exo_controls_fullscreen_exit
+                                )
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -97,10 +167,13 @@ class MainFragment : Fragment() {
     }
 
     private fun setupPlayer() {
-        exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
-        exoplayer.repeatMode = Player.REPEAT_MODE_ALL
-        binding.playerView.player = exoplayer
-
+        exoplayer = SimpleExoPlayer.Builder(this@MainFragment.requireContext()).build()
+        with(exoplayer) {
+            repeatMode = Player.REPEAT_MODE_ALL
+            binding.playerView.player = this
+        }.also {
+            binding.playerView.useController = false
+        }
     }
 
     private fun addMediaToPlayer(res: Int) {
@@ -126,8 +199,12 @@ class MainFragment : Fragment() {
     }
 
     private fun playVideo() {
-        binding.playerView.foreground = null
-        binding.playImageView.visibility = View.GONE
+        with(binding) {
+            playerView.foreground = null
+            playTapumeImageView.visibility = View.GONE
+            playImageView.visibility = View.VISIBLE
+            fullscreenImageView.visibility = View.VISIBLE
+        }
         exoplayer.play()
     }
 
