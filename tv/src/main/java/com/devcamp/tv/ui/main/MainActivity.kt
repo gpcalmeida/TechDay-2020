@@ -4,21 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.TranslateAnimation
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.devcamp.tv.*
+import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     lateinit var binding: ActivityMainBinding
-    private lateinit var exoplayer: SimpleExoPlayer
+    private lateinit var exoPlayer: SimpleExoPlayer
 
     init {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -32,31 +30,38 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         binding.matchesRecyclerView.onFocusChangeListener = this
         binding.mainContainer.onFocusChangeListener = this
         binding.matchesRecyclerView.visibility = View.INVISIBLE
-        setExoPlayer()
+        setupPlayer()
         setupMatchRecyclerAdapter()
     }
 
     override fun onPause() {
-        exoplayer.pause()
+        exoPlayer.pause()
         super.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        exoplayer.play()
+        exoPlayer.play()
     }
 
-    private fun setExoPlayer() {
-        exoplayer = SimpleExoPlayer.Builder(this).build()
-        with(exoplayer) {
+    private fun setupPlayer() {
+        exoPlayer = SimpleExoPlayer.Builder(this).build()
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
+        binding.matchPlayer.player = exoPlayer
+        addMediaToPlayer(R.raw.cam_bot)
+        exoPlayer.play()
+    }
+
+    private fun addMediaToPlayer(res: Int) {
+        with(exoPlayer) {
 
             val mediaItem = MediaItem.Builder()
-                .setUri(getVideoResourcePath(R.raw.acg_int))
+                .setUri(getVideoResourcePath(res))
                 .build()
 
             this.addMediaItem(mediaItem)
             this.prepare()
-            this.play()
+            this.next()
 
             binding.matchPlayer.requestFocus()
             binding.matchPlayer.player = this
@@ -119,7 +124,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "BOT",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_bot,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.cam_bot
             ),
             Match(
                 homeTeam = "ACG",
@@ -137,7 +142,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "SAO",
                 visitorScore = 3,
                 visitorDrawable = R.drawable.ic_sao,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.bah_sao
             ),
             Match(
                 homeTeam = "CFC",
@@ -146,7 +151,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "COR",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_cor,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.cfc_cor
             ),
             Match(
                 homeTeam = "FLU",
@@ -155,7 +160,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "BGT",
                 visitorScore = 0,
                 visitorDrawable = R.drawable.ic_bgt,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.flu_bgt
             ),
 
             Match(
@@ -165,7 +170,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "GOI",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_goi,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.for_goi
             ),
 
             Match(
@@ -175,7 +180,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "ATL",
                 visitorScore = 0,
                 visitorDrawable = R.drawable.ic_atl,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.pal_atl
             ),
 
             Match(
@@ -185,7 +190,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "SPT",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_spt,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.san_spt
             ),
 
             Match(
@@ -195,12 +200,13 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "CEA",
                 visitorScore = 4,
                 visitorDrawable = R.drawable.ic_cea,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.vas_cea
             )
         )
         binding.matchesRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
             onItemClickListener = {
-                Toast.makeText(this@MainActivity, "CLICOOOOOOOOOOU", Toast.LENGTH_SHORT).show()
+                addMediaToPlayer(it.videoDrawable)
+                exoPlayer.play()
             }
         }
     }
