@@ -65,7 +65,7 @@ class MainFragment : Fragment() {
         setupObservers()
         setupPlayer()
 
-        addMediaToPlayer(getVideoMediaSource("acg-int.mp4"))
+        addMediaToPlayer(getVideoMediaSource("cam-bot.mp4"))
     }
 
     override fun onPause() {
@@ -206,7 +206,7 @@ class MainFragment : Fragment() {
     private fun setupMatchRecyclerAdapter() {
         binding.matchRecyclerView.adapter = matchesAdapter.apply {
             onItemClickListener = {
-                addMediaToPlayer(getVideoMediaSource(it.videoDrawable))
+                addMediaToPlayer(getVideoMediaSource(it.videoRes))
                 playVideo()
             }
         }
@@ -216,6 +216,7 @@ class MainFragment : Fragment() {
         with(binding) {
             playerView.foreground = null
             playTapumeImageView.visibility = View.GONE
+            playImageView.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.exo_icon_pause))
             playImageView.visibility = View.VISIBLE
             fullscreenImageView.visibility = View.VISIBLE
         }

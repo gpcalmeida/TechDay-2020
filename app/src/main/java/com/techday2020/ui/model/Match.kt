@@ -7,5 +7,5 @@ data class Match(
     val visitorTeam : String,
     val visitorScore : Int,
     val visitorDrawable : String,
-    val videoDrawable : String
+    val videoRes : String
 )
