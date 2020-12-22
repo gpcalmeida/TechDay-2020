@@ -37,7 +37,7 @@ fun View.selected(): View {
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 fun View.expand() {
-    elevation = 1f
+    elevation = 2f
     animate().scaleX(1.1f).scaleY(1.1f).setDuration(200).start()
 }
 

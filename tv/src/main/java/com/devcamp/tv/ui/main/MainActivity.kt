@@ -1,22 +1,23 @@
 package com.devcamp.tv.ui.main
 
 import android.os.Bundle
-import android.transition.TransitionManager
-import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
+import android.view.animation.TranslateAnimation
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.devcamp.tv.*
-import com.devcamp.tv.ui.account.AccountFragment
-import com.devcamp.tv.ui.account.AccountFragment.Companion.ACCOUNT_TAG
-import com.devcamp.tv.ui.home.HomeFragment
-import com.devcamp.tv.ui.home.HomeFragment.Companion.HOME_TAG
+import com.devcamp.tv.databinding.ActivityMainBinding
+import com.devcamp.tv.ui.main.model.Match
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.SimpleExoPlayer
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClickListener {
-    private var isFirstTime: Boolean = true
+class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
+    lateinit var binding: ActivityMainBinding
 
     init {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -24,97 +25,54 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
+        binding.matchPlayer.onFocusChangeListener = this
+        binding.matchesRecyclerView.onFocusChangeListener = this
+        binding.mainContainer.onFocusChangeListener = this
+        binding.matchesRecyclerView.visibility = View.INVISIBLE
+        setExoPlayer()
+        setupMatchRecyclerAdapter()
+    }
 
-        setContentView(R.layout.activity_main)
+    private fun setExoPlayer() {
+        val exoPlayer = SimpleExoPlayer.Builder(this).build()
+        with(exoPlayer) {
 
-        unselectedViews(activity_main_text_view_account)
+            val mediaItem = MediaItem.Builder()
+                .setUri(getVideoResourcePath(R.raw.acg_int))
+                .build()
 
-        activity_main_text_view_home.setOnClickListener(this)
-        activity_main_text_view_account.setOnClickListener(this)
+            this.addMediaItem(mediaItem)
+            this.prepare()
+            this.play()
 
-        activity_main_text_view_home.onFocusChangeListener = this
-        activity_main_text_view_account.onFocusChangeListener = this
-
-        activity_main_text_view_home.selected()
-        activity_main_text_view_home.requestFocus()
-        onDestinationSelected(HOME_TAG)
-
-        openDrawer()    }
-
-    override fun onBackPressed() {
-        val viewSelected = whichViewIsSelected(activity_main_text_view_home, activity_main_text_view_account)
-
-        if (!drawerIsOpen()) {
-            openDrawer()
-
-            when (viewSelected) {
-                R.id.activity_main_text_view_home -> {
-                    (supportFragmentManager.findFragmentByTag(HOME_TAG) as? HomeFragment)?.drawerOpen()
-                    activity_main_text_view_home.focusDelayed()
-                }
-
-                R.id.activity_main_text_view_account -> {
-                    (supportFragmentManager.findFragmentByTag(ACCOUNT_TAG) as? AccountFragment)
-                    activity_main_text_view_home.focusDelayed()
-                }
-            }
-            return
-        }
-
-        closeDrawer()
-        when (viewSelected) {
-            R.id.activity_main_text_view_home -> {
-                activity_main_text_view_home.clearFocus()
-                (supportFragmentManager.findFragmentByTag(HOME_TAG) as? HomeFragment)?.drawerClosed()
-            }
-
-            R.id.activity_main_text_view_account -> {
-                activity_main_text_view_account.clearFocus()
-                (supportFragmentManager.findFragmentByTag(ACCOUNT_TAG) as? AccountFragment)
-            }
+            binding.matchPlayer.requestFocus()
+            binding.matchPlayer.player = this
         }
     }
 
-    private fun openDrawer() {
-        activity_main_content_menu.layoutParams = FrameLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.spacings_two_hundred_fifty), FrameLayout.LayoutParams.MATCH_PARENT)
-        activity_main_container.foreground = ContextCompat.getDrawable(baseContext,
-            R.color.blackFortyTransparency
-        )
-        TransitionManager.beginDelayedTransition(activity_main_content_menu)
+    private fun getVideoResourcePath(res: Int): String {
+        return "android.resource://${this.packageName}/${res}"
     }
-
-    private fun closeDrawer() {
-        activity_main_content_menu.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.MATCH_PARENT)
-        activity_main_container.foreground = null
-        TransitionManager.beginDelayedTransition(activity_main_content_menu)
-    }
-
-
-    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        when (event?.keyCode) {
-            KeyEvent.KEYCODE_BACK -> {
-                finish()
-            }
-        }
-        return super.onKeyLongPress(keyCode, event)
-    }
-
-    private fun drawerIsOpen() = activity_main_content_menu.layoutParams.width == resources.getDimensionPixelSize(R.dimen.spacings_two_hundred_fifty)
 
     override fun onFocusChange(view: View?, hasFocus: Boolean) {
-        when (view?.id) {
-            R.id.activity_main_text_view_home,
-            R.id.activity_main_text_view_account -> {
-                if (!isFirstTime) {
-                    if (hasFocus) {
-                        openDrawer()
-                        return
-                    }
-
-                    closeDrawer()
-                } else {
-                    isFirstTime = false
-                }
+        when {
+            view?.id == R.id.matchPlayer && hasFocus -> {
+                val shouldAnimate = !binding.matchesRecyclerView.isInvisible
+                binding.matchesRecyclerView.visibility = View.INVISIBLE
+                if (shouldAnimate) animateSlideDown(binding.matchesRecyclerView)
+            }
+            view?.id == R.id.mainContainer -> {
+                binding.matchesRecyclerView.requestFocus()
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
+            }
+            else -> {
+                val shouldAnimate = !binding.matchesRecyclerView.isVisible
+                binding.matchesRecyclerView.visibility = View.VISIBLE
+                if (shouldAnimate) animateSlideUp(binding.matchesRecyclerView)
             }
         }
     }
@@ -122,19 +80,117 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
     override fun onClick(view: View?) {
         view?.run {
             when (id) {
-                R.id.activity_main_text_view_home -> {
-                    unselectedViews(activity_main_text_view_account)
-                    selected()
-                    onDestinationSelected(HOME_TAG)
-                }
 
-                R.id.activity_main_text_view_account -> {
-                    unselectedViews(activity_main_text_view_home)
-                    selected()
-                    onDestinationSelected(ACCOUNT_TAG)
-                }
             }
-            closeDrawer()
+        }
+    }
+
+    private fun animateSlideUp(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
+    }
+
+    private fun animateSlideDown(view: View) {
+        val translateAnimation =  TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
+        translateAnimation.duration = 200
+        translateAnimation.fillAfter = true
+        view.startAnimation(translateAnimation)
+    }
+
+    private fun setupMatchRecyclerAdapter() {
+        val matches = listOf(
+            Match(
+                homeTeam = "CAM",
+                homeScore = 2,
+                homeDrawable = R.drawable.ic_cam,
+                visitorTeam = "BOT",
+                visitorScore = 1,
+                visitorDrawable = R.drawable.ic_bot,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "ACG",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_acg,
+                visitorTeam = "INT",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_int,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "BAH",
+                homeScore = 1,
+                homeDrawable = R.drawable.ic_bah,
+                visitorTeam = "SAO",
+                visitorScore = 3,
+                visitorDrawable = R.drawable.ic_sao,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "CFC",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_cfc,
+                visitorTeam = "COR",
+                visitorScore = 1,
+                visitorDrawable = R.drawable.ic_cor,
+                videoDrawable = R.raw.acg_int
+            ),
+            Match(
+                homeTeam = "FLU",
+                homeScore = 0,
+                homeDrawable = R.drawable.ic_flu,
+                visitorTeam = "BGT",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_bgt,
+                videoDrawable = R.raw.acg_int
+            ),
+
+            Match(
+                homeTeam = "FOR",
+                homeScore = 1,
+                homeDrawable = R.drawable.ic_for,
+                visitorTeam = "GOI",
+                visitorScore = 1,
+                visitorDrawable = R.drawable.ic_goi,
+                videoDrawable = R.raw.acg_int
+            ),
+
+            Match(
+                homeTeam = "PAL",
+                homeScore = 3,
+                homeDrawable = R.drawable.ic_pal,
+                visitorTeam = "ATL",
+                visitorScore = 0,
+                visitorDrawable = R.drawable.ic_atl,
+                videoDrawable = R.raw.acg_int
+            ),
+
+            Match(
+                homeTeam = "SAN",
+                homeScore = 1,
+                homeDrawable = R.drawable.ic_san,
+                visitorTeam = "SPT",
+                visitorScore = 1,
+                visitorDrawable = R.drawable.ic_spt,
+                videoDrawable = R.raw.acg_int
+            ),
+
+            Match(
+                homeTeam = "VAS",
+                homeScore = 1,
+                homeDrawable = R.drawable.ic_vas,
+                visitorTeam = "CEA",
+                visitorScore = 4,
+                visitorDrawable = R.drawable.ic_cea,
+                videoDrawable = R.raw.acg_int
+            )
+        )
+        binding.matchesRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
+            onItemClickListener = {
+                Toast.makeText(this@MainActivity, "CLICOOOOOOOOOOU", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

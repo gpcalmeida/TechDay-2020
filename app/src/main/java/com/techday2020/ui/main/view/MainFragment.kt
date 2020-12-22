@@ -116,7 +116,7 @@ class MainFragment : Fragment() {
     private fun setupMatchRecyclerAdapter() {
         binding.matchRecyclerView.adapter = matchesAdapter.apply {
             onItemClickListener = {
-                addMediaToPlayer(R.raw.bah_sao)
+                addMediaToPlayer(it.videoDrawable)
                 playVideo()
             }
         }
