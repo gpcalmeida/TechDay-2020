@@ -7,6 +7,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
+import com.devcamp.tv.expand
+import com.devcamp.tv.reduce
+import com.devcamp.tv.selected
 import com.devcamp.tv.ui.main.model.Match
 
 class MatchRecyclerAdapter(
@@ -15,6 +18,7 @@ class MatchRecyclerAdapter(
     View.OnFocusChangeListener {
 
     lateinit var onItemClickListener: (Match) -> Unit
+    var selectedPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -29,16 +33,28 @@ class MatchRecyclerAdapter(
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(matches[position])
+        holder.bind(matches[position], position == selectedPosition, position)
     }
 
-    class Holder(
+    inner class Holder(
         private val binding: ItemMatchBinding,
         private val onItemClickListener: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(match: Match) {
+        fun bind(match: Match, selected: Boolean, pos: Int) {
             with(binding.root.context) {
+                binding.root.background =
+                    if (selected) {
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.dr_selected_match_card
+                    )
+                } else {
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.dr_card_match_gradient
+                    )
+                }
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()
                 binding.homeTeamImageView.setImageDrawable(
@@ -59,18 +75,26 @@ class MatchRecyclerAdapter(
             }
 
             binding.root.setOnClickListener {
+                if (selectedPosition == pos)
+                    return@setOnClickListener
+
+                selectedPosition = pos
+                binding.root.selected()
                 onItemClickListener.invoke(match)
+                notifyDataSetChanged()
             }
         }
     }
 
     override fun onFocusChange(view: View, hasFocus: Boolean) {
         if (view.isFocused) {
-            view.background =
-                ContextCompat.getDrawable(view.context, R.drawable.dr_selected_match_card)
+            if (!view.isSelected) view.background =
+                ContextCompat.getDrawable(view.context, R.drawable.dr_hover_match_card)
+            view.expand()
         } else {
-            view.background =
+            if (!view.isSelected) view.background =
                 ContextCompat.getDrawable(view.context, R.drawable.dr_card_match_gradient)
+            view.reduce()
         }
     }
 }

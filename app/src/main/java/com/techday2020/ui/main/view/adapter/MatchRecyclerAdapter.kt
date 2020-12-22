@@ -49,7 +49,7 @@ class MatchRecyclerAdapter(
                     if (selected) {
                         ContextCompat.getDrawable(
                             this,
-                            R.drawable.dr_selected_match_card
+                            R.drawable.dr_hover_match_card
                         )
                     } else {
                         ContextCompat.getDrawable(
@@ -57,7 +57,6 @@ class MatchRecyclerAdapter(
                             R.drawable.dr_card_match_gradient
                         )
                     }
-
 
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()

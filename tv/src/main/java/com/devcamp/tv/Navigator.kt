@@ -10,5 +10,4 @@ class Navigator(var activity: Activity?) {
         val intent = Intent(activity, MainActivity::class.java)
         activity?.startActivity(intent)
     }
-
 }
