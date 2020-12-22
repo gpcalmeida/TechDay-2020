@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "BOT",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_bot,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.cam_bot
             ),
             Match(
                 homeTeam = "ACG",
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "SAO",
                 visitorScore = 3,
                 visitorDrawable = R.drawable.ic_sao,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.bah_sao
             ),
             Match(
                 homeTeam = "CFC",
@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "COR",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_cor,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.cfc_cor
             ),
             Match(
                 homeTeam = "FLU",
@@ -144,7 +144,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "BGT",
                 visitorScore = 0,
                 visitorDrawable = R.drawable.ic_bgt,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.flu_bgt
             ),
 
             Match(
@@ -154,7 +154,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "GOI",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_goi,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.for_goi
             ),
 
             Match(
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "ATL",
                 visitorScore = 0,
                 visitorDrawable = R.drawable.ic_atl,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.pal_atl
             ),
 
             Match(
@@ -174,7 +174,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "SPT",
                 visitorScore = 1,
                 visitorDrawable = R.drawable.ic_spt,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.san_spt
             ),
 
             Match(
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
                 visitorTeam = "CEA",
                 visitorScore = 4,
                 visitorDrawable = R.drawable.ic_cea,
-                videoDrawable = R.raw.acg_int
+                videoDrawable = R.raw.vas_cea
             )
         )
         binding.matchesRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
