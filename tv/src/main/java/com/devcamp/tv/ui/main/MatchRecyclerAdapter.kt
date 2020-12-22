@@ -3,11 +3,10 @@ package com.devcamp.tv.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
-import com.devcamp.tv.expand
-import com.devcamp.tv.reduce
 import com.devcamp.tv.ui.main.model.Match
 
 class MatchRecyclerAdapter(
@@ -39,11 +38,11 @@ class MatchRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
-            with(binding.root.context){
+            with(binding.root.context) {
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()
                 binding.homeTeamImageView.setImageDrawable(
-                    androidx.core.content.ContextCompat.getDrawable(
+                    ContextCompat.getDrawable(
                         this,
                         match.homeDrawable
                     )
@@ -52,7 +51,7 @@ class MatchRecyclerAdapter(
                 binding.visitorTeamTextView.text = match.visitorTeam
                 binding.visitorScoreTextView.text = match.visitorScore.toString()
                 binding.visitorTeamImageView.setImageDrawable(
-                    androidx.core.content.ContextCompat.getDrawable(
+                    ContextCompat.getDrawable(
                         this,
                         match.visitorDrawable
                     )
@@ -67,9 +66,11 @@ class MatchRecyclerAdapter(
 
     override fun onFocusChange(view: View, hasFocus: Boolean) {
         if (view.isFocused) {
-            view.expand()
+            view.background =
+                ContextCompat.getDrawable(view.context, R.drawable.dr_selected_match_card)
         } else {
-            view.reduce()
+            view.background =
+                ContextCompat.getDrawable(view.context, R.drawable.dr_card_match_gradient)
         }
     }
 }
