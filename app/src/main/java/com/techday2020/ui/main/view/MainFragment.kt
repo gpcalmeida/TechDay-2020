@@ -36,6 +36,8 @@ class MainFragment : Fragment() {
 
     private val matchesAdapter = MatchRecyclerAdapter(emptyList())
 
+    private var isFirstTime = true
+
     private lateinit var exoplayer: SimpleExoPlayer
     private lateinit var binding: MainFragmentBinding
     private lateinit var controller: MainController
@@ -62,13 +64,15 @@ class MainFragment : Fragment() {
     }
 
     override fun onPause() {
-        exoplayer.pause()
         super.onPause()
+        exoplayer.pause()
+        isFirstTime = false
     }
 
     override fun onResume() {
         super.onResume()
-        exoplayer.play()
+        if(!isFirstTime)
+            exoplayer.play()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
