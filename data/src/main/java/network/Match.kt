@@ -1,4 +1,4 @@
-package com.devcamp.network
+package network
 
 data class Match(
     val home: String,

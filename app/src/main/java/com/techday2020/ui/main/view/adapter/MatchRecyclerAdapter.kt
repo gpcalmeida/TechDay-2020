@@ -1,5 +1,6 @@
 package com.techday2020.ui.main.view.adapter
 
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techday2020.R
 import com.techday2020.databinding.ItemMatchBinding
 import com.techday2020.ui.model.Match
+
 
 class MatchRecyclerAdapter(
     private var matches: List<Match>
@@ -31,7 +33,7 @@ class MatchRecyclerAdapter(
         holder.bind(matches[position], position == selectedPosition, position)
     }
 
-    fun replaceMatches(matches : List<Match>) {
+    fun replaceMatches(matches: List<Match>) {
         this.matches = matches
         notifyDataSetChanged()
     }
@@ -41,7 +43,7 @@ class MatchRecyclerAdapter(
         private val onItemClickListener: (match: Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(match: Match, selected: Boolean, pos : Int) {
+        fun bind(match: Match, selected: Boolean, pos: Int) {
             with(binding.root.context) {
                 binding.matchRootLinearLayout.background =
                     if (selected) {
@@ -49,8 +51,7 @@ class MatchRecyclerAdapter(
                             this,
                             R.drawable.dr_selected_match_card
                         )
-                    }
-                    else {
+                    } else {
                         ContextCompat.getDrawable(
                             this,
                             R.drawable.dr_card_match_gradient
@@ -60,24 +61,22 @@ class MatchRecyclerAdapter(
 
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()
-                binding.homeTeamImageView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        match.homeDrawable
-                    )
-                )
+                binding.homeTeamImageView.apply {
+                    val inputStream = assets.open("logos/"+match.homeDrawable)
+                    val d = Drawable.createFromStream(inputStream, null)
+                    setImageDrawable(d)
+                }
 
                 binding.visitorTeamTextView.text = match.visitorTeam
                 binding.visitorScoreTextView.text = match.visitorScore.toString()
-                binding.visitorTeamImageView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        match.visitorDrawable
-                    )
-                )
+                binding.visitorTeamImageView.apply {
+                    val inputStream = assets.open("logos/"+match.visitorDrawable)
+                    val d = Drawable.createFromStream(inputStream, null)
+                    setImageDrawable(d)
+                }
 
                 binding.root.setOnClickListener {
-                    if(selectedPosition == pos)
+                    if (selectedPosition == pos)
                         return@setOnClickListener
 
                     selectedPosition = pos
