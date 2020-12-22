@@ -12,6 +12,7 @@ import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 
 class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
 
     private fun setupPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(this).build()
+        exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
         binding.matchPlayer.player = exoPlayer
         addMediaToPlayer(R.raw.cam_bot)
         exoPlayer.play()
