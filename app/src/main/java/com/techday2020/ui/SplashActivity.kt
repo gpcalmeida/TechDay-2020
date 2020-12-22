@@ -12,7 +12,7 @@ class SplashActivity : Activity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.activity_splash)
     }
 
     public override fun onResume() {
