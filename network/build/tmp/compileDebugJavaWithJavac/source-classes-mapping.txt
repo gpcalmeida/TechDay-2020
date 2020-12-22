@@ -1,2 +1,0 @@
-com/devcamp/network/BuildConfig.java
- com.devcamp.network.BuildConfig

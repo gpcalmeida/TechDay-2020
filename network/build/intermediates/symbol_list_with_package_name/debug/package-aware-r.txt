@@ -1,2 +1,0 @@
-com.devcamp.network
-string app_name
