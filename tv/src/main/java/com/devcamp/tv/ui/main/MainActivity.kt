@@ -35,6 +35,16 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         setupMatchRecyclerAdapter()
     }
 
+    override fun onPause() {
+        exoPlayer.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        exoPlayer.play()
+    }
+
     private fun setupPlayer() {
         exoPlayer = SimpleExoPlayer.Builder(this).build()
         exoPlayer.repeatMode = Player.REPEAT_MODE_ONE
