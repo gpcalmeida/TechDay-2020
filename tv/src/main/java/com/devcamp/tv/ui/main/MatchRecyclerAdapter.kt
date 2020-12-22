@@ -3,6 +3,7 @@ package com.devcamp.tv.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
@@ -41,10 +42,25 @@ class MatchRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
-            binding.homeTeamTextView.text = match.homeTeam
-            binding.homeScoreTextView.text = match.homeScore.toString()
-            binding.visitorTeamTextView.text = match.visitorTeam
-            binding.visitorScoreTextView.text = match.visitorScore.toString()
+            with(binding.root.context){
+                binding.homeTeamTextView.text = match.homeTeam
+                binding.homeScoreTextView.text = match.homeScore.toString()
+                binding.homeTeamImageView.setImageDrawable(
+                    androidx.core.content.ContextCompat.getDrawable(
+                        this,
+                        match.homeDrawable
+                    )
+                )
+
+                binding.visitorTeamTextView.text = match.visitorTeam
+                binding.visitorScoreTextView.text = match.visitorScore.toString()
+                binding.visitorTeamImageView.setImageDrawable(
+                    androidx.core.content.ContextCompat.getDrawable(
+                        this,
+                        match.visitorDrawable
+                    )
+                )
+            }
 
             binding.root.setOnClickListener {
                 onItemClickListener.invoke()

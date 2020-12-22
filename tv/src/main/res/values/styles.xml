@@ -28,10 +28,16 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TeamTextView">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/opensans_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
     <style name="ScoreTextView">
-        <item name="android:textSize">20sp</item>
-        <item name="fontFamily">@font/opensans_regular</item>
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/opensans_semibold</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
     </style>
