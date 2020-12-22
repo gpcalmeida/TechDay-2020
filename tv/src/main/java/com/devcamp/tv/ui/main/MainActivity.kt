@@ -12,9 +12,10 @@ import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 
-class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnFocusChangeListener {
     lateinit var binding: ActivityMainBinding
     private lateinit var exoPlayer: SimpleExoPlayer
 
@@ -93,23 +94,15 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         }
     }
 
-    override fun onClick(view: View?) {
-        view?.run {
-            when (id) {
-
-            }
-        }
-    }
-
     private fun animateSlideUp(view: View) {
-        val translateAnimation =  TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
+        val translateAnimation = TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
         translateAnimation.duration = 200
         translateAnimation.fillAfter = true
         view.startAnimation(translateAnimation)
     }
 
     private fun animateSlideDown(view: View) {
-        val translateAnimation =  TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
+        val translateAnimation = TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
         translateAnimation.duration = 200
         translateAnimation.fillAfter = true
         view.startAnimation(translateAnimation)
