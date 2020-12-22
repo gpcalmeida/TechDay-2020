@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -21,6 +22,7 @@ import com.techday2020.databinding.MainFragmentBinding
 import com.techday2020.ui.main.MainController
 import com.techday2020.ui.main.MainControllerFactory
 import com.techday2020.ui.main.view.adapter.MatchRecyclerAdapter
+import com.techday2020.ui.model.Info
 import network.MatchServiceImpl
 
 class MainFragment : Fragment() {
@@ -57,10 +59,7 @@ class MainFragment : Fragment() {
         setupMatchRecyclerAdapter()
         setupObservers()
         setupPlayer()
-
-        binding.infoImageView.setOnClickListener{showInfo()}
-
-        addMediaToPlayer(getVideoMediaSource("acg-int.mp4"))
+        binding.infoImageView.setOnClickListener { showInfo() }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -92,6 +91,9 @@ class MainFragment : Fragment() {
         viewModel.getMatches().observe(viewLifecycleOwner, Observer { matches ->
             matches?.let {
                 matchesAdapter.replaceMatches(it)
+
+                setInfo(it[0].info)
+                addMediaToPlayer(getVideoMediaSource(it[0].videoDrawable))
             }
         })
     }
@@ -115,6 +117,9 @@ class MainFragment : Fragment() {
         binding.matchRecyclerView.adapter = matchesAdapter.apply {
             onItemClickListener = {
                 addMediaToPlayer(getVideoMediaSource(it.videoDrawable))
+
+                setInfo(it.info)
+
                 playVideo()
             }
         }
@@ -137,11 +142,21 @@ class MainFragment : Fragment() {
             )
     }
 
-    private fun showInfo(){
-        if(isVisible){
+    private fun showInfo() {
+        if (binding.infoContainer.isVisible) {
             binding.infoContainer.visibility = View.GONE
         } else {
             binding.infoContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setInfo(info: Info?) {
+        if (info != null) {
+            binding.infoImageView.visibility = View.VISIBLE
+            binding.infoTitleTextView.text = info.title
+            binding.descriptionTextView.text = info.description
+        } else {
+            binding.infoImageView.visibility = View.GONE
         }
     }
 }

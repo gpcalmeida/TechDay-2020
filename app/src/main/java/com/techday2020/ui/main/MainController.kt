@@ -3,6 +3,7 @@ package com.techday2020.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.techday2020.ui.model.Info
 import com.techday2020.ui.model.Match
 import network.MatchService
 
@@ -28,7 +29,10 @@ class MainController(private val matchesService: MatchService) : ViewModel() {
                         it.away,
                         getScoreByPosition(it.score, 1),
                         getLogo(it.away),
-                        getVideoPath(it.home, it.away)
+                        getVideoPath(it.home, it.away),
+                        it.info?.let { info ->
+                            Info(info.title, info.content)
+                        }
                     )
                 }
             )
