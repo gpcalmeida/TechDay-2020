@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.video.VideoListener
 import com.techday2020.R
@@ -97,10 +98,9 @@ class MainFragment : Fragment() {
 
     private fun setupPlayer() {
         exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
-        with(exoplayer) {
-            binding.playerView.player = this
-            this.repeatMode = "1".toInt()
-        }
+        exoplayer.repeatMode = Player.REPEAT_MODE_ALL
+        binding.playerView.player = exoplayer
+
     }
 
     private fun addMediaToPlayer(res: Int) {

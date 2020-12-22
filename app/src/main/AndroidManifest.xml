@@ -11,7 +11,7 @@
         android:theme="@style/Theme.TechDay2020">
 
         <activity android:name=".ui.SplashActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.main.view.MainActivity"/>
+        <activity android:name=".ui.main.view.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"/>
     </application>
 
 </manifest>
