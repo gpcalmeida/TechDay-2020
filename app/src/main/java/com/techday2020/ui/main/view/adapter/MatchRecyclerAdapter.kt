@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.techday2020.R
 import com.techday2020.databinding.ItemMatchBinding
 import com.techday2020.ui.model.Match
+import java.util.*
 
 
 class MatchRecyclerAdapter(
@@ -49,7 +50,7 @@ class MatchRecyclerAdapter(
                     if (selected) {
                         ContextCompat.getDrawable(
                             this,
-                            R.drawable.dr_hover_match_card
+                            R.drawable.dr_selected_match_card
                         )
                     } else {
                         ContextCompat.getDrawable(
@@ -58,6 +59,7 @@ class MatchRecyclerAdapter(
                         )
                     }
 
+                binding.homeTeamTextView.text = match.homeTeam.toUpperCase(Locale.getDefault())
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()
                 binding.homeTeamImageView.apply {
@@ -66,7 +68,7 @@ class MatchRecyclerAdapter(
                     setImageDrawable(d)
                 }
 
-                binding.visitorTeamTextView.text = match.visitorTeam
+                binding.visitorTeamTextView.text = match.visitorTeam.toUpperCase(Locale.getDefault())
                 binding.visitorScoreTextView.text = match.visitorScore.toString()
                 binding.visitorTeamImageView.apply {
                     val inputStream = assets.open("logos/"+match.visitorDrawable)
