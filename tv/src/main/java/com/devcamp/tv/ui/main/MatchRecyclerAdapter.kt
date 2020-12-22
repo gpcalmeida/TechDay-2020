@@ -24,6 +24,7 @@ class MatchRecyclerAdapter(
         view.root.isFocusable = true
         view.root.onFocusChangeListener = this
         view.root.nextFocusUpId = R.id.matchPlayer
+        view.root.nextFocusDownId = R.id.matchPlayer
         return Holder(view, onItemClickListener)
     }
 
@@ -49,6 +50,8 @@ class MatchRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(match: Match, selected: Boolean, pos: Int) {
             with(binding.root.context) {
+                binding.root.nextFocusUpId = R.id.matchPlayer
+                binding.root.nextFocusDownId = R.id.matchPlayer
                 binding.root.isSelected = selected
                 binding.root.background =
                     ContextCompat.getDrawable(this, R.drawable.dr_selector_match_item)
