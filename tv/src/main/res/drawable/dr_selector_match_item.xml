@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/dr_selected_match_card" android:state_selected="true" android:state_focused="false"/>
+    <item android:drawable="@drawable/dr_selected_hover_match_card" android:state_selected="true" android:state_focused="true"/>
+    <item android:drawable="@drawable/dr_hover_match_card" android:state_focused="true" android:state_selected="false"/>
+    <item android:drawable="@drawable/dr_card_match_gradient"/>
+</selector>

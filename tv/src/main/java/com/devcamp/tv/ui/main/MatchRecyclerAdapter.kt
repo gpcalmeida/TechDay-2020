@@ -9,7 +9,6 @@ import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
 import com.devcamp.tv.expand
 import com.devcamp.tv.reduce
-import com.devcamp.tv.selected
 import com.devcamp.tv.ui.main.model.Match
 
 class MatchRecyclerAdapter(
@@ -36,25 +35,23 @@ class MatchRecyclerAdapter(
         holder.bind(matches[position], position == selectedPosition, position)
     }
 
+    override fun onFocusChange(view: View, hasFocus: Boolean) {
+        if (view.isFocused) {
+            view.expand()
+        } else {
+            view.reduce()
+        }
+    }
+
     inner class Holder(
         private val binding: ItemMatchBinding,
         private val onItemClickListener: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(match: Match, selected: Boolean, pos: Int) {
             with(binding.root.context) {
+                binding.root.isSelected = selected
                 binding.root.background =
-                    if (selected) {
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.dr_selected_match_card
-                    )
-                } else {
-                    ContextCompat.getDrawable(
-                        this,
-                        R.drawable.dr_card_match_gradient
-                    )
-                }
+                    ContextCompat.getDrawable(this, R.drawable.dr_selector_match_item)
                 binding.homeTeamTextView.text = match.homeTeam
                 binding.homeScoreTextView.text = match.homeScore.toString()
                 binding.homeTeamImageView.setImageDrawable(
@@ -77,24 +74,11 @@ class MatchRecyclerAdapter(
             binding.root.setOnClickListener {
                 if (selectedPosition == pos)
                     return@setOnClickListener
-
                 selectedPosition = pos
-                binding.root.selected()
                 onItemClickListener.invoke(match)
+                binding.root.isSelected = true
                 notifyDataSetChanged()
             }
-        }
-    }
-
-    override fun onFocusChange(view: View, hasFocus: Boolean) {
-        if (view.isFocused) {
-            if (!view.isSelected) view.background =
-                ContextCompat.getDrawable(view.context, R.drawable.dr_hover_match_card)
-            view.expand()
-        } else {
-            if (!view.isSelected) view.background =
-                ContextCompat.getDrawable(view.context, R.drawable.dr_card_match_gradient)
-            view.reduce()
         }
     }
 }
