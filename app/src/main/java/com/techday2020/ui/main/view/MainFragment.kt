@@ -2,26 +2,29 @@ package com.techday2020.ui.main.view
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.techday2020.R
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.AssetDataSource
+import com.google.android.exoplayer2.upstream.DataSource
 import com.techday2020.databinding.MainFragmentBinding
 import com.techday2020.ui.main.MainController
 import com.techday2020.ui.main.MainControllerFactory
 import com.techday2020.ui.main.view.adapter.MatchRecyclerAdapter
+import network.MatchServiceImpl
 
 class MainFragment : Fragment() {
 
@@ -31,7 +34,7 @@ class MainFragment : Fragment() {
     }
 
     private val viewModel by viewModels<MainController> {
-        MainControllerFactory()
+        MainControllerFactory(MatchServiceImpl(requireContext()))
     }
 
     private val matchesAdapter = MatchRecyclerAdapter(emptyList())
@@ -40,7 +43,6 @@ class MainFragment : Fragment() {
 
     private lateinit var exoplayer: SimpleExoPlayer
     private lateinit var binding: MainFragmentBinding
-    private lateinit var controller: MainController
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,14 +55,17 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        controller = ViewModelProvider(this).get(MainController::class.java)
+
+        binding.playImageView.setOnClickListener {
+            playVideo()
+        }
 
         setupMatchRecyclerAdapter()
         setupListeners()
         setupObservers()
         setupPlayer()
 
-        addMediaToPlayer(R.raw.acg_int)
+        addMediaToPlayer(getVideoMediaSource("acg-int.mp4"))
     }
 
     override fun onPause() {
@@ -190,14 +195,9 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun addMediaToPlayer(res: Int) {
+    private fun addMediaToPlayer(mediaSource: MediaSource) {
         with(exoplayer) {
-            val mediaItem = MediaItem.Builder()
-                .setUri(getVideoResourcePath(res))
-                .setMediaId(res.toString())
-                .build()
-
-            this.addMediaItem(mediaItem)
+            this.setMediaSource(mediaSource)
             this.prepare()
             this.next()
         }
@@ -206,7 +206,7 @@ class MainFragment : Fragment() {
     private fun setupMatchRecyclerAdapter() {
         binding.matchRecyclerView.adapter = matchesAdapter.apply {
             onItemClickListener = {
-                addMediaToPlayer(it.videoDrawable)
+                addMediaToPlayer(getVideoMediaSource(it.videoDrawable))
                 playVideo()
             }
         }
@@ -222,7 +222,14 @@ class MainFragment : Fragment() {
         exoplayer.play()
     }
 
-    private fun getVideoResourcePath(res: Int): String {
-        return "android.resource://${this@MainFragment.requireActivity().packageName}/${res}"
+    private fun getVideoMediaSource(path: String): MediaSource {
+        val dataSourceFactory: DataSource.Factory =
+            DataSource.Factory { AssetDataSource(requireActivity()) }
+
+        return ProgressiveMediaSource.Factory(dataSourceFactory)
+            .createMediaSource(
+                MediaItem.Builder().setUri(Uri.parse("assets:///matches/$path"))
+                    .build()
+            )
     }
 }
