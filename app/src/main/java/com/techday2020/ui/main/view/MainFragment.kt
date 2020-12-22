@@ -58,6 +58,8 @@ class MainFragment : Fragment() {
         setupObservers()
         setupPlayer()
 
+        binding.infoImageView.setOnClickListener{showInfo()}
+
         addMediaToPlayer(getVideoMediaSource("acg-int.mp4"))
     }
 
@@ -133,5 +135,13 @@ class MainFragment : Fragment() {
                 MediaItem.Builder().setUri(Uri.parse("assets:///matches/$path"))
                     .build()
             )
+    }
+
+    private fun showInfo(){
+        if(isVisible){
+            binding.infoContainer.visibility = View.GONE
+        } else {
+            binding.infoContainer.visibility = View.VISIBLE
+        }
     }
 }
