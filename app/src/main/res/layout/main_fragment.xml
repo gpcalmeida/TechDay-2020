@@ -25,6 +25,15 @@
         app:use_controller="false"
         app:layout_constraintDimensionRatio="16:9"
         app:layout_constraintTop_toBottomOf="@id/tabLayout"/>
+
+    <ImageView
+        android:id="@+id/infoImageView"
+        app:layout_constraintTop_toTopOf="@id/playerView"
+        app:layout_constraintEnd_toEndOf="@id/playerView"
+        android:src="@drawable/ic_round_info_24"
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     
     <ImageView
         android:id="@+id/playImageView"
