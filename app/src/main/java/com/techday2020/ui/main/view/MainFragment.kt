@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.video.VideoListener
 import com.techday2020.R
 import com.techday2020.databinding.MainFragmentBinding
 import com.techday2020.ui.main.MainController
@@ -49,14 +51,15 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         controller = ViewModelProvider(this).get(MainController::class.java)
 
-        addMediaToPlayer(R.raw.acg_int)
-
         binding.playImageView.setOnClickListener {
             playVideo()
         }
 
         setupMatchRecyclerAdapter()
         setupObservers()
+        setupPlayer()
+
+        addMediaToPlayer(R.raw.acg_int)
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -92,8 +95,12 @@ class MainFragment : Fragment() {
         })
     }
 
-    private fun addMediaToPlayer(res: Int) {
+    private fun setupPlayer() {
         exoplayer = SimpleExoPlayer.Builder(this.requireContext()).build()
+        binding.playerView.player = exoplayer
+    }
+
+    private fun addMediaToPlayer(res: Int) {
         with(exoplayer) {
             val mediaItem = MediaItem.Builder()
                 .setUri(getVideoResourcePath(res))
@@ -102,8 +109,7 @@ class MainFragment : Fragment() {
 
             this.addMediaItem(mediaItem)
             this.prepare()
-
-            binding.playerView.player = exoplayer
+            this.next()
         }
     }
 
@@ -113,17 +119,16 @@ class MainFragment : Fragment() {
                 addMediaToPlayer(R.raw.bah_sao)
                 playVideo()
             }
-
         }
-    }
-
-    private fun getVideoResourcePath(res: Int): String {
-        return "android.resource://${this@MainFragment.requireActivity().packageName}/${res}"
     }
 
     private fun playVideo() {
         binding.playerView.foreground = null
         binding.playImageView.visibility = View.GONE
         exoplayer.play()
+    }
+
+    private fun getVideoResourcePath(res: Int): String {
+        return "android.resource://${this@MainFragment.requireActivity().packageName}/${res}"
     }
 }
