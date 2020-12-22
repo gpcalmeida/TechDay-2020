@@ -3,22 +3,19 @@ package com.devcamp.tv.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ItemMatchBinding
 import com.devcamp.tv.expand
 import com.devcamp.tv.reduce
 import com.devcamp.tv.ui.main.model.Match
-import kotlinx.android.synthetic.main.activity_main.view.*
-import kotlinx.android.synthetic.main.item_movie.view.*
 
 class MatchRecyclerAdapter(
     private var matches: List<Match>
 ) : RecyclerView.Adapter<MatchRecyclerAdapter.Holder>(),
     View.OnFocusChangeListener {
 
-    lateinit var onItemClickListener: () -> Unit
+    lateinit var onItemClickListener: (Match) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = ItemMatchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,7 +35,7 @@ class MatchRecyclerAdapter(
 
     class Holder(
         private val binding: ItemMatchBinding,
-        private val onItemClickListener: () -> Unit
+        private val onItemClickListener: (Match) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(match: Match) {
@@ -63,7 +60,7 @@ class MatchRecyclerAdapter(
             }
 
             binding.root.setOnClickListener {
-                onItemClickListener.invoke()
+                onItemClickListener.invoke(match)
             }
         }
     }

@@ -4,20 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.TranslateAnimation
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.devcamp.tv.*
+import com.devcamp.tv.R
 import com.devcamp.tv.databinding.ActivityMainBinding
 import com.devcamp.tv.ui.main.model.Match
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     lateinit var binding: ActivityMainBinding
+    private lateinit var exoPlayer: SimpleExoPlayer
 
     init {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
@@ -31,21 +30,27 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         binding.matchesRecyclerView.onFocusChangeListener = this
         binding.mainContainer.onFocusChangeListener = this
         binding.matchesRecyclerView.visibility = View.INVISIBLE
-        setExoPlayer()
+        setupPlayer()
         setupMatchRecyclerAdapter()
     }
 
-    private fun setExoPlayer() {
-        val exoPlayer = SimpleExoPlayer.Builder(this).build()
+    private fun setupPlayer() {
+        exoPlayer = SimpleExoPlayer.Builder(this).build()
+        binding.matchPlayer.player = exoPlayer
+        addMediaToPlayer(R.raw.cam_bot)
+        exoPlayer.play()
+    }
+
+    private fun addMediaToPlayer(res: Int) {
         with(exoPlayer) {
 
             val mediaItem = MediaItem.Builder()
-                .setUri(getVideoResourcePath(R.raw.acg_int))
+                .setUri(getVideoResourcePath(res))
                 .build()
 
             this.addMediaItem(mediaItem)
             this.prepare()
-            this.play()
+            this.next()
 
             binding.matchPlayer.requestFocus()
             binding.matchPlayer.player = this
@@ -189,7 +194,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnCli
         )
         binding.matchesRecyclerView.adapter = MatchRecyclerAdapter(matches).apply {
             onItemClickListener = {
-                Toast.makeText(this@MainActivity, "CLICOOOOOOOOOOU", Toast.LENGTH_SHORT).show()
+                addMediaToPlayer(it.videoDrawable)
+                exoPlayer.play()
             }
         }
     }
