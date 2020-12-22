@@ -1,14 +1,12 @@
-package com.devcamp.network
+package network
 
 import android.content.Context
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 
 class MatchServiceImpl(private val context: Context) : MatchService {
-    override fun getMatches(): List<Match> {
+    override fun getMatches(): Result {
         val json = context.resources.assets.open(JSON_PATH).reader()
-        val itemType = object : TypeToken<List<Match>>() {}.type
-        return Gson().fromJson<List<Match>>(json, itemType)
+        return Gson().fromJson<Result>(json, Result::class.java)
     }
 
     companion object {
