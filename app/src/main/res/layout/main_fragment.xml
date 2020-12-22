@@ -86,6 +86,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height_zero"
         android:layout_marginTop="@dimen/spacings_sixteen"
+        android:paddingEnd="@dimen/spacings_sixteen"
+        android:clipToPadding="false"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@id/liveMatchesTextView"
