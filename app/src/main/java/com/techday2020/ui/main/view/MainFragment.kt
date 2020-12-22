@@ -40,6 +40,7 @@ class MainFragment : Fragment() {
     private val matchesAdapter = MatchRecyclerAdapter(emptyList())
 
     private var isFirstTime = true
+    private var isControllerHidden = false
 
     private lateinit var exoplayer: SimpleExoPlayer
     private lateinit var binding: MainFragmentBinding
@@ -119,6 +120,18 @@ class MainFragment : Fragment() {
 
     private fun setupListeners() {
         with(binding) {
+            playerView.setOnTouchListener { v, _ ->
+                isControllerHidden = !isControllerHidden
+                if(isControllerHidden) {
+                    playImageView.visibility = View.GONE
+                    fullscreenImageView.visibility = View.GONE
+                } else {
+                    playImageView.visibility = View.VISIBLE
+                    fullscreenImageView.visibility = View.VISIBLE
+                }
+                v.performClick()
+            }
+
             playTapumeImageView.setOnClickListener {
                 playVideo()
             }
