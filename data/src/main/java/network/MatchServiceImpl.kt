@@ -12,6 +12,6 @@ class MatchServiceImpl(private val context: Context) : MatchService {
     companion object {
         const val LOGOS_FOLDER = "logos"
         const val VIDEOS_FOLDER = "matches"
-        const val JSON_PATH = "matches.json"
+        const val JSON_PATH = "matches-v2.json"
     }
 }
