@@ -1,15 +1,15 @@
 package com.techday2020.ui.main
 
+import android.app.PictureInPictureParams
 import android.content.res.Configuration
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.techday2020.R
@@ -31,8 +31,28 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = MainFragmentBinding.inflate(layoutInflater, container, false)
+
+        binding.pipButton.setOnClickListener {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                val params: PictureInPictureParams = PictureInPictureParams.Builder().build()
+                requireActivity().enterPictureInPictureMode(params)
+                binding.pipButton.visibility = View.GONE
+            }
+        }
+
+        binding.playerView.videoSurfaceView?.setOnClickListener {
+            binding.pipButton.visibility = View.VISIBLE
+            val handler = Handler()
+            handler.postDelayed(
+                {
+                    binding.pipButton.visibility = View.GONE
+                },
+                2000L
+            )
+        }
+
         return binding.root
     }
 
@@ -151,6 +171,6 @@ class MainFragment : Fragment() {
     }
 
     private fun getVideoResourcePath(res: Int): String {
-        return "android.resource://${this@MainFragment.requireActivity().packageName}/${res}"
+        return "android.resource://${this@MainFragment.requireActivity().packageName}/$res"
     }
 }

@@ -15,7 +15,7 @@ import com.devcamp.tv.ui.home.HomeFragment
 import com.devcamp.tv.ui.home.HomeFragment.Companion.HOME_TAG
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnFocusChangeListener, View.OnClickListener {
     private var isFirstTime: Boolean = true
 
     init {
@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
         activity_main_text_view_home.requestFocus()
         onDestinationSelected(HOME_TAG)
 
-        openDrawer()    }
+        openDrawer()
+    }
 
     override fun onBackPressed() {
         val viewSelected = whichViewIsSelected(activity_main_text_view_home, activity_main_text_view_account)
@@ -77,7 +78,8 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
 
     private fun openDrawer() {
         activity_main_content_menu.layoutParams = FrameLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.spacings_two_hundred_fifty), FrameLayout.LayoutParams.MATCH_PARENT)
-        activity_main_container.foreground = ContextCompat.getDrawable(baseContext,
+        activity_main_container.foreground = ContextCompat.getDrawable(
+            baseContext,
             R.color.blackFortyTransparency
         )
         TransitionManager.beginDelayedTransition(activity_main_content_menu)
@@ -88,7 +90,6 @@ class MainActivity : AppCompatActivity(), View.OnFocusChangeListener,View.OnClic
         activity_main_container.foreground = null
         TransitionManager.beginDelayedTransition(activity_main_content_menu)
     }
-
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         when (event?.keyCode) {

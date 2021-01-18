@@ -9,8 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TechDay2020">
-        <activity android:name=".ui.main.MainActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboardHidden|screenSize"
+            android:supportsPictureInPicture="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
